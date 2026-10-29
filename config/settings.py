@@ -3,6 +3,7 @@
 import os
 from pathlib import Path
 
+from django.core.exceptions import ImproperlyConfigured
 from django.core.management.utils import get_random_secret_key
 from dotenv import load_dotenv
 
@@ -11,10 +12,34 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
 
+
+def _env_bool(name, default):
+    """Interpreta valores booleanos habituales y rechaza configuraciones ambiguas."""
+    value = os.getenv(name)
+    if value is None:
+        return default
+
+    normalized = value.strip().lower()
+    if normalized in {"true", "1", "yes", "on"}:
+        return True
+    if normalized in {"false", "0", "no", "off"}:
+        return False
+    raise ImproperlyConfigured(
+        f"{name} debe ser true/false, 1/0, yes/no u on/off."
+    )
+
+
 # Clave de sesión y parámetros de ejecución. En producción, definir estos valores
 # en el entorno y desactivar DEBUG.
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY") or get_random_secret_key()
-DEBUG = os.getenv("DJANGO_DEBUG", "true").lower() == "true"
+DEBUG = _env_bool("DJANGO_DEBUG", True)
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+if not SECRET_KEY:
+    if not DEBUG:
+        raise ImproperlyConfigured(
+            "DJANGO_SECRET_KEY es obligatorio cuando DJANGO_DEBUG está desactivado."
+        )
+    SECRET_KEY = get_random_secret_key()
+
 ALLOWED_HOSTS = [
     host.strip()
     for host in os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
@@ -117,3 +142,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'videojuegos:listar'
 LOGOUT_REDIRECT_URL = 'login'
+
+# Valores seguros por defecto en producción; HSTS se habilita explícitamente
+# porque solo debe usarse después de confirmar que todo el sitio sirve HTTPS.
+SECURE_SSL_REDIRECT = _env_bool("DJANGO_SECURE_SSL_REDIRECT", not DEBUG)
+SESSION_COOKIE_SECURE = _env_bool("DJANGO_SESSION_COOKIE_SECURE", not DEBUG)
+CSRF_COOKIE_SECURE = _env_bool("DJANGO_CSRF_COOKIE_SECURE", not DEBUG)
+SECURE_HSTS_SECONDS = int(os.getenv("DJANGO_SECURE_HSTS_SECONDS", "0"))
+SECURE_HSTS_INCLUDE_SUBDOMAINS = _env_bool(
+    "DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS", False
+)
+SECURE_HSTS_PRELOAD = _env_bool("DJANGO_SECURE_HSTS_PRELOAD", False)

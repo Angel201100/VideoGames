@@ -12,6 +12,16 @@ Copy-Item .env.example .env
 ```
 
 Edita `.env` y reemplaza `MONGO_URI` por la cadena de conexión de tu clúster Atlas. No compartas ni subas ese archivo.
+En desarrollo, Django genera una clave secreta temporal si `DJANGO_SECRET_KEY` está vacío.
+En producción, configura una clave secreta propia, `DJANGO_DEBUG=false` y
+`DJANGO_ALLOWED_HOSTS` con los dominios reales de la aplicación.
+
+Al desactivar `DJANGO_DEBUG`, Django activa por defecto la redirección HTTPS y las
+cookies seguras. Si HTTPS termina en un proxy, ajusta `DJANGO_SECURE_SSL_REDIRECT`
+según la configuración del proxy. Configura `DJANGO_SECURE_HSTS_SECONDS` solo
+después de confirmar que el sitio funciona completamente con HTTPS. Activa
+`DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS` y `DJANGO_SECURE_HSTS_PRELOAD` solo si
+todos los subdominios también sirven exclusivamente por HTTPS.
 
 Para cargar cinco juegos de ejemplo en el catálogo, ejecuta una vez:
 
@@ -31,6 +41,8 @@ python manage.py runserver
 ```
 
 Abre <http://127.0.0.1:8000/> e inicia sesión con la cuenta creada.
+
+Para comprobar la configuración de despliegue, ejecuta `python manage.py check --deploy`.
 
 ## Pruebas
 

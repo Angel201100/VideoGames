@@ -1,0 +1,4 @@
+Django>=5.2,<5.3
+pymongo>=4.13,<5
+dnspython>=2.7,<3
+python-dotenv>=1.1,<2

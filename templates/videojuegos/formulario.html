@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if editando %}Editar{% else %}Registrar{% endif %} videojuego</title>
+    <link rel="stylesheet" href="{% static 'css/videojuegos.css' %}">
+</head>
+<body>
+    <main class="form-shell">
+        <!-- El formulario conserva solo el título y los campos de registro o edición. -->
+        <h1>{% if editando %}Editar videojuego{% else %}Registrar videojuego{% endif %}</h1>
+        <!-- Mensajes de validación o conexión enviados por la vista. -->
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <p class="message {{ message.tags }}">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <section class="form-card">
+            <form method="post">
+                <!-- Token CSRF requerido por Django para aceptar el envío POST. -->
+                {% csrf_token %}
+                <!-- Campos de texto y precio; el valor cero se conserva al editar. -->
+                <p>
+                    <label for="nombre">Nombre del videojuego:</label>
+                    <input id="nombre" type="text" name="nombre" maxlength="100"
+                           value="{{ videojuego.nombre|default:'' }}" required>
+                </p>
+                <p>
+                    <label for="costo">Costo:</label>
+                    <input id="costo" type="number" name="costo" min="0" step="0.01"
+                           value="{{ videojuego.costo|default_if_none:'' }}" required>
+                </p>
+                <p>
+                    <label for="descripcion">Descripción del juego:</label>
+                    <textarea id="descripcion" name="descripcion" rows="4" maxlength="500"
+                              required>{{ videojuego.descripcion|default:'' }}</textarea>
+                </p>
+                <!-- Jugadores solo acepta enteros de 1 a 100; la vista valida de nuevo. -->
+                <p>
+                    <label for="jugadores">Cantidad de jugadores:</label>
+                    <input id="jugadores" type="number" name="jugadores" min="1" max="100"
+                           step="1" value="{{ videojuego.jugadores|default_if_none:'' }}"
+                           required>
+                </p>
+                <!-- Acciones para guardar el formulario o volver sin modificar datos. -->
+                <div class="form-actions">
+                    <button class="button button-primary" type="submit">Guardar videojuego</button>
+                    <a class="button button-quiet" href="{% url 'videojuegos:listar' %}">
+                        Cancelar
+                    </a>
+                </div>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

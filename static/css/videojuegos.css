@@ -1,0 +1,425 @@
+:root {
+    color-scheme: light;
+    --background: #f4f6f8;
+    --surface: #fff;
+    --text: #263445;
+    --muted: #687789;
+    --accent: #3974b8;
+    --border: #dce3ea;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    min-width: 320px;
+    margin: 0;
+    background: var(--background);
+    color: var(--text);
+    font-family: system-ui, sans-serif;
+}
+
+a {
+    color: inherit;
+}
+
+.topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+}
+
+.topbar-inner {
+    display: flex;
+    width: min(1050px, calc(100% - 32px));
+    min-height: 64px;
+    margin: 0 auto;
+    align-items: center;
+    gap: 30px;
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--text);
+    font-size: 15px;
+    font-weight: 750;
+    text-decoration: none;
+}
+
+.brand-mark {
+    display: grid;
+    width: 32px;
+    height: 32px;
+    place-items: center;
+    border-radius: 8px;
+    background: #e7f0fa;
+    color: var(--accent);
+    font-size: 18px;
+}
+
+.brand-accent {
+    color: var(--accent);
+}
+
+.main-nav,
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.main-nav a {
+    padding: 22px 0;
+    color: var(--muted);
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.main-nav a:hover,
+.main-nav .nav-active {
+    color: var(--accent);
+}
+
+.user-menu {
+    margin-left: auto;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.user-menu strong {
+    color: var(--text);
+}
+
+.user-menu form,
+.game-actions form {
+    margin: 0;
+}
+
+.store-shell {
+    width: min(1050px, calc(100% - 32px));
+    margin: 28px auto;
+}
+
+.button {
+    display: inline-flex;
+    min-height: 38px;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 0 14px;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    background: #e9eef3;
+    color: #34475b;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 650;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.button:hover {
+    filter: brightness(.97);
+}
+
+.button-primary {
+    background: var(--accent);
+    color: #fff;
+}
+
+.button-quiet {
+    min-height: 32px;
+    border-color: var(--border);
+    background: var(--surface);
+    font-size: 12px;
+}
+
+.catalog-section {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.catalog-toolbar,
+.catalog-tools {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.catalog-toolbar h1 {
+    margin: 0;
+    font-size: 26px;
+    line-height: 1.2;
+}
+
+.catalog-subtitle {
+    margin: 5px 0 0;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.game-count {
+    padding: 7px 10px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    background: var(--surface);
+    color: var(--muted);
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.game-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+    gap: 16px;
+}
+
+.game-card {
+    display: flex;
+    min-width: 0;
+    overflow: hidden;
+    flex-direction: column;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    box-shadow: 0 2px 6px rgb(34 52 70 / 5%);
+}
+
+.game-card-header {
+    display: flex;
+    min-height: 58px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    background: #fafbfd;
+}
+
+.game-card-header h2 {
+    overflow-wrap: anywhere;
+    margin: 0;
+    font-size: 17px;
+}
+
+.game-price {
+    flex-shrink: 0;
+    padding: 5px 9px;
+    border-radius: 6px;
+    background: #eaf4ed;
+    color: #34704a;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.game-info {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 16px 18px;
+}
+
+.game-description {
+    flex: 1;
+    min-height: 64px;
+    margin: 0 0 14px;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+.game-meta {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.game-actions {
+    display: flex;
+    margin-top: 16px;
+    padding-top: 13px;
+    gap: 8px;
+    border-top: 1px solid #edf0f3;
+}
+
+.button-small {
+    min-height: 32px;
+    font-size: 12px;
+}
+
+.button-danger {
+    background: #fff0ef;
+    color: #a53d36;
+}
+
+.empty-state {
+    grid-column: 1 / -1;
+    padding: 40px 20px;
+    border: 1px dashed #cbd5df;
+    border-radius: 10px;
+    background: var(--surface);
+    text-align: center;
+}
+
+.empty-state h3 {
+    margin: 0 0 8px;
+}
+
+.empty-state p {
+    margin: 0 0 18px;
+    color: var(--muted);
+}
+
+.messages {
+    margin-bottom: 16px;
+}
+
+.message {
+    padding: 11px 14px;
+    border: 1px solid #d5e3f1;
+    border-radius: 7px;
+    background: #edf5fc;
+    color: #355a7e;
+}
+
+.message.success {
+    border-color: #cee6d4;
+    background: #eff8f1;
+    color: #34704a;
+}
+
+.message.error {
+    border-color: #f0d0ce;
+    background: #fff2f1;
+    color: #a53d36;
+}
+
+.form-shell {
+    width: min(650px, calc(100% - 32px));
+    margin: 40px auto;
+}
+
+.form-shell > h1 {
+    margin: 0 0 18px;
+    font-size: 24px;
+}
+
+.form-card {
+    padding: 26px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    box-shadow: 0 3px 12px rgb(34 52 70 / 5%);
+}
+
+.form-card label {
+    display: block;
+    margin-bottom: 7px;
+    color: #405166;
+    font-size: 13px;
+    font-weight: 650;
+}
+
+.form-card input,
+.form-card textarea {
+    display: block;
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid #ccd6e0;
+    border-radius: 7px;
+    outline: none;
+    background: #fff;
+    color: var(--text);
+    font: inherit;
+}
+
+.form-card input:focus,
+.form-card textarea:focus {
+    border-color: #78a5d2;
+    box-shadow: 0 0 0 3px rgb(57 116 184 / 12%);
+}
+
+.form-card textarea {
+    resize: vertical;
+}
+
+.form-card p {
+    margin: 0 0 18px;
+}
+
+.form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+}
+
+.login-shell {
+    display: grid;
+    min-height: 100vh;
+    place-items: center;
+    padding: 20px;
+}
+
+.login-card {
+    width: min(420px, 100%);
+}
+
+.login-card h1 {
+    margin: 0 0 22px;
+    font-size: 24px;
+}
+
+.login-card ul.errorlist {
+    padding-left: 20px;
+    color: #a53d36;
+    font-size: 12px;
+}
+
+.login-card .helptext {
+    display: block;
+    margin-top: 6px;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+@media (max-width: 650px) {
+    .user-menu {
+        gap: 8px;
+    }
+
+    .store-shell {
+        width: calc(100% - 24px);
+        margin-top: 20px;
+    }
+
+    .catalog-toolbar h1 {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 400px) {
+    .user-menu > span {
+        display: none;
+    }
+
+    .catalog-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .catalog-tools {
+        justify-content: space-between;
+    }
+
+    .game-card-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+    }
+}

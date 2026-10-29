@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de videojuegos</title>
+    <link rel="stylesheet" href="{% static 'css/videojuegos.css' %}">
+</head>
+<body>
+    <!-- Barra de sesión: solo muestra el usuario actual y la acción para salir. -->
+    <header class="topbar">
+        <div class="topbar-inner">
+            <div class="user-menu">
+                <span>Hola, <strong>{{ user.username }}</strong></span>
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="button button-quiet">Cerrar sesión</button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <main class="store-shell">
+        <!-- Mensajes temporales para confirmar acciones o explicar errores del CRUD. -->
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <p class="message {{ message.tags }}">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Encabezado del catálogo agrupa el título, el total y la acción principal. -->
+        <section class="catalog-section" aria-labelledby="catalog-title">
+            <header class="catalog-toolbar">
+                <div>
+                    <h1 id="catalog-title">Juegos</h1>
+                    <p class="catalog-subtitle">Administra tu colección de videojuegos.</p>
+                </div>
+                <div class="catalog-tools">
+                    <span class="game-count">{{ videojuegos|length }} juegos</span>
+                    <a class="button button-primary" href="{% url 'videojuegos:crear' %}">
+                        <span aria-hidden="true">+</span> Agregar juego
+                    </a>
+                </div>
+            </header>
+
+            <!-- Cada videojuego tiene una tarjeta independiente y acciones propias. -->
+            <div class="game-grid">
+                {% for videojuego in videojuegos %}
+                    <article class="game-card">
+                        <div class="game-card-header">
+                            <h2>{{ videojuego.nombre }}</h2>
+                            <span class="game-price">${{ videojuego.costo }}</span>
+                        </div>
+                        <div class="game-info">
+                            <!-- Django escapa el texto del videojuego al renderizarlo. -->
+                            <p class="game-description">{{ videojuego.descripcion }}</p>
+                            <div class="game-meta">
+                                <span aria-hidden="true">●</span>
+                                <span>{{ videojuego.jugadores }} jugadores</span>
+                            </div>
+                            <div class="game-actions">
+                                <a class="button button-small"
+                                   href="{% url 'videojuegos:editar' videojuego.id %}">Editar</a>
+                                <!-- La eliminación usa POST y token CSRF, nunca un enlace GET. -->
+                                <form method="post"
+                                      action="{% url 'videojuegos:eliminar' videojuego.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="button button-small button-danger"
+                                            onclick="return confirm('¿Deseas eliminar este videojuego?')">
+                                        Eliminar
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </article>
+                {% empty %}
+                    <!-- Estado vacío con la misma acción principal del encabezado. -->
+                    <div class="empty-state">
+                        <h2>Aún no hay juegos</h2>
+                        <p>Agrega tu primer videojuego para empezar a organizar tu colección.</p>
+                        <a class="button button-primary" href="{% url 'videojuegos:crear' %}">
+                            Agregar juego
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+</body>
+</html>

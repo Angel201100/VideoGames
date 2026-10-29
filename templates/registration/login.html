@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión</title>
+    <link rel="stylesheet" href="{% static 'css/videojuegos.css' %}">
+</head>
+<body>
+    <main class="login-shell">
+        <section class="form-card login-card">
+            <h1>Iniciar sesión</h1>
+            {% if messages %}
+                {% for message in messages %}
+                    <p class="message {{ message.tags }}">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+            <form method="post">
+                <!-- LoginView genera los campos; Django valida la contraseña y crea la sesión. -->
+                {% csrf_token %}
+                {{ form.as_p }}
+                <!-- Conserva la ruta solicitada antes del login para redirigir al terminar. -->
+                <input type="hidden" name="next" value="{{ next }}">
+                <button class="button button-primary" type="submit">Ingresar</button>
+            </form>
+        </section>
+    </main>
+</body>
+</html>
